@@ -51,14 +51,20 @@ console.log("Countdown: " + countdown);
 // There are also two style issues (not errors, but bad practice).
 // Find the logic bug AND the two style issues.
 
-var username1 = "gamer99";
-var username2 = "Gamer99";
-console.log("Names match: " + (username1 == username2));
+// var username1 = "gamer99";
+// var username2 = "Gamer99";
+// console.log("Names match: " + (username1 == username2));
 
 // Logic bug ↓
+// should use === instead since its more strict (case sensitive issue here.)
 
 // Style issue 1 ↓
+// var should be changed to const/let
 
 // Style issue 2 ↓
+// username should be camelcase ie. userName1, userName2
 
 // Your fix ↓
+const username1 = "gamer99";
+const username2 = "Gamer99";
+console.log("Names match: " + (username1 === username2));
