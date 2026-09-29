@@ -54,29 +54,21 @@ const testInputs = {
 //   if valid:        `"${username}" is a valid username`
 //
 // Test with all four username test inputs. Log each result.
-
-function isValidUsername(random) {
-  if (typeof random !== "string") {
-    return { valid: false, message: "Username should be a string" };
+function isValidUsername(userName){
+  if (typeof userName !== "string"){
+    return{valid:false, message: "Username must be a string"};
   }
-  if (random.length < 3) {
-    return {
-      valid: false,
-      message: `Username must be at least 3 characters long (got ${random.length})`,
-    };
+  if (userName.length < 3){
+    return{valid:false, message: `Username must be at least 3 characters(got ${userName.length})`};
   }
-  if (random.length > 20) {
-    return {
-      valid: false,
-      message: `Username must be at least 20 characters or fewer (got ${random.length})`,
-    };
+  if (userName.length > 20){
+    return{valid:false, message: `Username must be 20 characters or fewer (got ${userName.length})`};
   }
-  if (random.includes(" ")) {
-    return { valid: false, message: "Username cannot have spaces" };
+  if (userName.includes(" ")){
+    return{valid:false, message: "Username cannot contain spaces"};
   }
-  return { valid: true, message: `${random} is a valid username` };
+  return{valid : true, message: `${userName} is a valid username`};
 }
-
 console.log("--- Task 1: Username Validation ---");
 console.log(isValidUsername(testInputs.validUsername));
 console.log(isValidUsername(testInputs.shortUsername));
@@ -104,43 +96,29 @@ console.log(isValidUsername(testInputs.spacesUsername));
 // Use .includes(), .split("@"), .indexOf(".") for checks.
 //
 // Test with validEmail, noAtEmail, noDomainEmail.
-
-function isValidEmail(email) {
-  if (typeof email !== "string") {
-    return {
-      valid: false,
-      cleanEmail: "",
-      message: "Email should be a string",
-    };
+function isValidEmail(email){
+  if (typeof email !== "string"){
+    return{valid:false, cleanEmail, message: "Email must be a string"};
   }
   const cleanEmail = email.trim().toLowerCase();
 
-  if (!cleanEmail.includes("@")) {
-    return { valid: false, cleanEmail, message: "Email must have a '@' " };
+  if (!cleanEmail.includes("@")){
+    return{valid:false, cleanEmail, message: "Email missing '@'"};
   }
-
-  const [localPart, domain] = cleanEmail.split("@");
-
-  if (!localPart || localPart.length === 0) {
-    return {
-      valid: false,
-      cleanEmail,
-      meassage: "Email must include characters before the '@' symbol",
-    };
+  const [emailUser, emailDomain] = cleanEmail.split("@");
+  if(!emailUser || emailUser === 0){
+    return{valid:false, cleanEmail, message: "Email must include characters before the @ symbol"}
   }
-
-  if (!domain || !domain.includes(".")) {
-    return { valid: false, cleanEmail, message: "Email must include a '.' " };
+  if (!emailDomain || !emailDomain.includes(".")){
+    return{valid:false, cleanEmail, message:"Email missing '.'"};
   }
-
-  return { valid: true, cleanEmail, message: `${cleanEmail} is a valid email` };
+  return{valid:true, cleanEmail, message: `${cleanEmail} This is a valid email`};
 }
 console.log("\n--- Task 2: Email Validation ---");
+// your code here
 console.log(isValidEmail(testInputs.validEmail));
 console.log(isValidEmail(testInputs.noAtEmail));
 console.log(isValidEmail(testInputs.noDomainEmail));
-// your code here
-
 // ----------------------------------------------------------
 // TASK 3 — isValidAge
 // ----------------------------------------------------------
@@ -159,13 +137,30 @@ console.log(isValidEmail(testInputs.noDomainEmail));
 //
 // Write a comment: why use Number() instead of parseInt() here?
 
+// Number() converts the whole string or gives NaN
+
 function isValidAge(ageInput) {
   // your code here
+  const age = Number(ageInput);
+
+  if (isNaN(age)){
+    return{valid:false, message: `${ageInput} is not a valid number`};
+  } 
+  if (age < 13){
+    return{valid:false, message: `Age must be at least 13 (got ${age})`};
+  }
+  if (age > 120){
+    return{valid:false, message: `Age must be 120 or below (got ${age})`};
+  }
+  return{valid:true, age, message: `Valid age: ${age}`};
 }
 
 console.log("\n--- Task 3: Age Validation ---");
 // your code here
-
+console.log(isValidAge(testInputs.validAge));
+console.log(isValidAge(testInputs.youngAge));
+console.log(isValidAge(testInputs.textAge));
+console.log(isValidAge(testInputs.negativeAge));
 // ----------------------------------------------------------
 // TASK 4 — isValidPassword
 // ----------------------------------------------------------
@@ -196,12 +191,42 @@ console.log("\n--- Task 3: Age Validation ---");
 //
 // Test with all five password test inputs.
 
+
+
 function isValidPassword(password) {
+  const hasUpper = password !== password.toLowerCase();
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*?_\-]/.test(password);
+
   // your code here
+  const errors = [];
+
+  if (password.length < 8){
+    errors.push("at least 8 characters");
+  }
+  if (!hasUpper){
+    errors.push("at least one uppercase letter needed");
+  }
+  if (!hasNumber){
+    errors.push("at least one number needed");
+  }
+  if (!hasSpecial){
+    errors.push("at least one special character needed");
+  }
+
+  if (errors.length > 0){
+    return{valid:false, message: `Password needs: ${errors.join(", ")}`};
+  }
+  return{valid:true, message: "Password meets all requirements"};
 }
 
 console.log("\n--- Task 4: Password Validation ---");
 // your code here
+console.log(isValidPassword(testInputs.validPassword));
+console.log(isValidPassword(testInputs.shortPassword));
+console.log(isValidPassword(testInputs.noUpperPassword));
+console.log(isValidPassword(testInputs.noNumberPassword));
+console.log(isValidPassword(testInputs.noSpecialPassword));
 
 // ----------------------------------------------------------
 // TASK 5 — formatValidationResult
@@ -217,10 +242,23 @@ console.log("\n--- Task 4: Password Validation ---");
 
 function formatValidationResult(fieldName, result) {
   // your code here
+  return `${result.valid ? "✅" : "❌"} ${fieldName}: ${result.message}`;
 }
 
 console.log("\n--- Task 5: Formatted Results ---");
 // Rerun at least 3 tests from each validator through formatValidationResult
+console.log(formatValidationResult("Username", isValidUsername(testInputs.validUsername)));
+console.log(formatValidationResult("Short Username", isValidUsername(testInputs.shortUsername)));
+
+console.log(formatValidationResult("Email", isValidEmail(testInputs.validEmail)));
+console.log(formatValidationResult("Email", isValidEmail(testInputs.noAtEmail)));
+
+console.log(formatValidationResult("Age", isValidAge(testInputs.validAge)));
+console.log(formatValidationResult("Age", isValidAge(testInputs.negativeAge)));
+
+console.log(formatValidationResult("Password", isValidPassword(testInputs.validPassword)));
+console.log(formatValidationResult("Short Password", isValidPassword(testInputs.shortPassword)));
+
 
 // ----------------------------------------------------------
 // TASK 6 — validateSignUpForm
@@ -258,11 +296,32 @@ console.log("\n--- Task 5: Formatted Results ---");
 
 function validateSignUpForm(formData) {
   // your code here
+  const results = {
+    username: isValidUsername(formData.username),
+    email: isValidEmail(formData.email),
+    age: isValidAge(formData.age),
+    password: isValidPassword(formData.password)
+  }
+  const formValid = Object.values(results).every(r => r.valid);
+  console.log(`Form valid: ${formValid}`);
+  return{valid:formValid, results};
 }
 
 console.log("\n--- Task 6: Full Form Validation ---");
 // your code here
+console.log(validateSignUpForm({
+  username: "alexdev",
+  email: "alex@devstudio.com",
+  age: "28",
+  password: "SecurePass1!"
+}))
 
+console.log(validateSignUpForm({
+  username: "al",
+  email: "not-an-email",
+  age: "twelve",
+  password: "abc!"
+}))
 // ----------------------------------------------------------
 // TASK 7 — cleanFormData
 // ----------------------------------------------------------
@@ -289,10 +348,28 @@ console.log("\n--- Task 6: Full Form Validation ---");
 
 function cleanFormData(rawFormData) {
   // your code here
+  const resultsCleaned = {
+    username: rawFormData.username.trim().toLowerCase(),
+    email: rawFormData.email.trim().toLowerCase(),
+    age: rawFormData.age.trim(),
+    password: rawFormData.password
+  }
+
+  console.log(`Cleaned username: "${rawFormData.username}" => "${resultsCleaned.username}"`)
+  console.log(`Cleaned email: "${rawFormData.email}" => "${resultsCleaned.email}"`)
+  console.log(`Cleaned age: "${rawFormData.age}" => "${resultsCleaned.age}"`)
+
+  return resultsCleaned;
 }
 
 console.log("\n--- Task 7: Cleaning Form Data ---");
 // your code here
+console.log(cleanFormData({
+    username: "  AlexDev  ",
+    email:    "  ALEX@DEVSTUDIO.COM  ",
+    age:      "  28  ",
+    password: "SecurePass1!"
+  }))
 
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots: full pipeline
@@ -307,8 +384,24 @@ console.log("\n--- Task 7: Cleaning Form Data ---");
 // Write a comment: why clean before validating?
 // (Hint: would " ALEX@DEVSTUDIO.COM " pass the email validator?)
 
+// cleaning  would trim the spaces that would fail the validation
+
 console.log("\n--- Task 8: Full Pipeline ---");
 // your code here
+const rawData = {
+  username: "  AlexDev  ",
+  email:    "  ALEX@DEVSTUDIO.COM  ",
+  age:      "  28  ",
+  password: "SecurePass1!"
+}
+
+const cleaned = cleanFormData(rawData);
+const validation = validateSignUpForm(cleaned);
+
+console.log(formatValidationResult("username", validation.results.username));
+console.log(formatValidationResult("email", validation.results.email));
+console.log(formatValidationResult("age", validation.results.age));
+console.log(formatValidationResult("password", validation.results.password));
 
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL — formatSummary
@@ -330,10 +423,30 @@ console.log("\n--- Task 8: Full Pipeline ---");
 //   Object.entries(validationResult.results).forEach(([field, result]) => { ... })
 //
 // Write a comment: what does Object.entries() return?
-
+// havent learned any of this in the lessons?
 function formatSummary(validationResult) {
   // your code here
+  const overall = validationResult.valid
+    ? "✅ Ready to submit"
+    : "❌ Form has errors";
+
+  let fieldLines = "";
+
+  Object.entries(validationResult.results).forEach(([field, result]) => {
+    fieldLines += `${field.padEnd(10)}${result.valid ? "✅" : "❌"} ${result.message}\n`;
+  });
+
+  return `=== Sign-Up Validation Report ===
+Overall: ${overall}
+
+${fieldLines.trimEnd()}`;
 }
 
 console.log("\n--- Stretch: formatSummary ---");
 // your code here
+console.log(formatSummary(validateSignUpForm({
+  username: "alexdev",
+  email:    "alex@devstudio.com",
+  age:      "28",
+  password: "SecurePass1!"
+})));
