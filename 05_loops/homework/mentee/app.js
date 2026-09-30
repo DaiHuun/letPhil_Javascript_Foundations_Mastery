@@ -257,7 +257,7 @@ for (let i = 1; i <= 6; i++) {
 //
 // After the loop, log: "🏆 Total loyalty points: " + loyaltyPoints
 let loyaltyPoints = 0;
-cartTotal = 0;
+cartTotal = 0; // resetting cart total to 0 for this for loop
 for (let i = 1; i <= 6; i++) {
   let currentPrice = 0;
   if (i === 1) {
