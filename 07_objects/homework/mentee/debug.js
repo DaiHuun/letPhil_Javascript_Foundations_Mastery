@@ -5,25 +5,24 @@
 // Explain what was wrong as a comment. Then fix it.
 // ============================================================
 
-
 // ----------------------------------------------------------
 // 🟢 DEBUG 1 — Easy
 // ----------------------------------------------------------
 // This should log the product's category but logs undefined.
 
 const product = {
-  name:     "Laptop",
-  price:    999,
+  name: "Laptop",
+  price: 999,
   category: "Electronics",
-  stock:    10
+  stock: 10,
 };
 
-console.log(product.Category);
+// console.log(product.Category);
 
 // What's wrong ↓
-
+// product.Category isnt correct
 // Your fix ↓
-
+console.log(product.category);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -32,19 +31,22 @@ console.log(product.Category);
 // It logs "undefined undefined" for every product. Why?
 
 const inventory = [
-  { Name: "Shirt",  Price: 29.99 },
-  { Name: "Jeans",  Price: 59.99 },
-  { Name: "Jacket", Price: 89.99 }
+  { Name: "Shirt", Price: 29.99 },
+  { Name: "Jeans", Price: 59.99 },
+  { Name: "Jacket", Price: 89.99 },
 ];
 
-for (let i = 0; i < inventory.length; i++) {
-  console.log(inventory[i].name + " — $" + inventory[i].price);
-}
+// for (let i = 0; i < inventory.length; i++) {
+//   console.log(inventory[i].name + " — $" + inventory[i].price);
+// }
 
 // What's wrong ↓
+// .name and .price arnt the same as the one in the object, ie case sensitive to match
 
 // Your fix ↓
-
+for (let i = 0; i < inventory.length; i++) {
+  console.log(inventory[i].Name + " — $" + inventory[i].Price);
+}
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -53,21 +55,26 @@ for (let i = 0; i < inventory.length; i++) {
 // (price × stock) and log it. It logs NaN. There are TWO bugs.
 
 const products = [
-  { name: "Phone",   price: 699, stock: 15 },
-  { name: "Tablet",  price: 499, stock: 8  },
-  { name: "Monitor", price: 329, stock: 12 }
+  { name: "Phone", price: 699, stock: 15 },
+  { name: "Tablet", price: 499, stock: 8 },
+  { name: "Monitor", price: 329, stock: 12 },
 ];
 
 let totalValue = 0;
 
-for (let i = 0; i <= products.length; i++) {
-  totalValue += products[i].price * products.stock;
+// for (let i = 0; i <= products.length; i++) {
+//   totalValue += products[i].price * products.stock;
+// }
+
+// console.log("Total value: $" + totalValue);
+
+// Bug 1 ↓
+// in the for loop, < should be used instead of <=
+// Bug 2 ↓
+// price and stock should be using products[i] to get the correct indexes after incrementing to multiply
+// Your fix ↓
+for (let i = 0; i < products.length; i++) {
+  totalValue += products[i].price * products[i].stock;
 }
 
 console.log("Total value: $" + totalValue);
-
-// Bug 1 ↓
-
-// Bug 2 ↓
-
-// Your fix ↓
