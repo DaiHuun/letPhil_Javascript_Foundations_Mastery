@@ -321,7 +321,7 @@ function addNewTask(title, assignee, priority = "medium", status = "todo") {
   } else if (newTask.status === "done") {
     doneList.append(newTaskCard);
   }
-
+  renderHeader(tasks);
   updateCounts(tasks);
 }
 
