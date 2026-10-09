@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,6 @@
   -->
 
   <body>
-
     <header class="board-header">
       <div class="header-left">
         <h1 id="board-title">Sprint 12 — Task Board</h1>
@@ -26,7 +25,7 @@
       </div>
       <div class="header-right">
         <span id="completed-count" class="stat-pill completed">✅ 0 done</span>
-        <span id="pending-count"   class="stat-pill pending">⏳ 0 pending</span>
+        <span id="pending-count" class="stat-pill pending">⏳ 0 pending</span>
         <!-- Filter buttons — clicking filters visible tasks -->
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="high">🔴 High</button>
@@ -37,8 +36,8 @@
 
     <!-- ADD TASK FORM -->
     <div class="add-task-bar">
-      <input type="text"    id="task-title-input"    placeholder="Task title..."    />
-      <input type="text"    id="task-assignee-input" placeholder="Assignee..."      />
+      <input type="text" id="task-title-input" placeholder="Task title..." />
+      <input type="text" id="task-assignee-input" placeholder="Assignee..." />
       <select id="task-priority-input">
         <option value="low">Low</option>
         <option value="medium" selected>Medium</option>
@@ -50,26 +49,30 @@
         <option value="done">Done</option>
       </select>
       <button id="add-task-btn">+ Add Task</button>
+      <input id="search-input" />
     </div>
 
     <!-- BOARD COLUMNS -->
     <main class="board">
       <div class="column" id="col-todo">
-        <h2 class="column-title">📋 To Do
+        <h2 class="column-title">
+          📋 To Do
           <span class="col-count" id="count-todo">0</span>
         </h2>
         <ul class="task-list" id="list-todo"></ul>
       </div>
 
       <div class="column" id="col-inprogress">
-        <h2 class="column-title">⚡ In Progress
+        <h2 class="column-title">
+          ⚡ In Progress
           <span class="col-count" id="count-inprogress">0</span>
         </h2>
         <ul class="task-list" id="list-inprogress"></ul>
       </div>
 
       <div class="column" id="col-done">
-        <h2 class="column-title">✅ Done
+        <h2 class="column-title">
+          ✅ Done
           <span class="col-count" id="count-done">0</span>
         </h2>
         <ul class="task-list" id="list-done"></ul>
@@ -77,5 +80,6 @@
     </main>
 
     <script src="app.js"></script>
+    <!-- <script src="debug.js"></script> -->
   </body>
 </html>
