@@ -8,27 +8,32 @@
 
 const WEATHER_API = "https://api.open-meteo.com/v1/forecast";
 
-
 // ----------------------------------------------------------
 // 🟢 DEBUG 1 — Easy
 // ----------------------------------------------------------
 // This should fetch weather data and log the temperature.
 // Instead it logs undefined. What's wrong?
 
+// async function getLondonTemp() {
+//   const response = await axios.get(
+//     WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true",
+//   );
+//   console.log("Temperature: " + response.data.temperature); // undefined
+// }
+
+// getLondonTemp();
+
+// What's wrong ↓
+// temperature is located in data.current_weather
+// Your fix ↓
 async function getLondonTemp() {
   const response = await axios.get(
-    WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true"
+    WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true",
   );
-  console.log("Temperature: " + response.data.temperature); // undefined
+  console.log("Temperature: " + response.data.current_weather.temperature);
 }
 
 getLondonTemp();
-
-// What's wrong ↓
-
-// Your fix ↓
-
-
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
 // ----------------------------------------------------------
@@ -36,20 +41,28 @@ getLondonTemp();
 // with a TypeError — and it happens INSTANTLY, before the
 // request could possibly have finished. That timing is a clue.
 
+// async function getNYTemp() {
+//   const response = axios.get(
+//     WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true",
+//   );
+//   console.log("Temp: " + response.data.current_weather.temperature);
+// }
+
+// getNYTemp();
+
+// What's wrong ↓
+// missing the await before axios.get
+
+// Your fix ↓
+
 async function getNYTemp() {
-  const response = axios.get(
-    WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true"
+  const response = await axios.get(
+    WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true",
   );
   console.log("Temp: " + response.data.current_weather.temperature);
 }
 
 getNYTemp();
-
-// What's wrong ↓
-
-// Your fix ↓
-
-
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
 // ----------------------------------------------------------
@@ -58,28 +71,61 @@ getNYTemp();
 // a crash on a bad city key.
 
 const CITIES = {
-  "london": { name: "London", lat: 51.51, lon: -0.13 }
+  london: { name: "London", lat: 51.51, lon: -0.13 },
 };
 
+// async function fetchCity(cityKey) {
+//   const city = CITIES[cityKey];
+
+//   try {
+//     const response = await axios.get(
+//       WEATHER_API +
+//         "?latitude=" +
+//         city.lat +
+//         "&longitude=" +
+//         city.lon +
+//         "&current_weather=true",
+//     );
+//     const temp = response.data.temperature; // Bug 1: wrong path to temperature
+//     console.log(city.name + ": " + temp + "°C");
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// }
+
+// fetchCity("london"); // works (kinda)
+// fetchCity("tokyo"); // Bug 2: crashes before even fetching
+
+// Bug 1 ↓
+// wrong path for const temp. missing current_weather
+
+// Bug 2 ↓
+// tokyo doesnt exist inside the CITIES Object.
+
+// Your fix ↓
 async function fetchCity(cityKey) {
   const city = CITIES[cityKey];
+  //added if statement to just validate if city is in CITIES
+  if (!city) {
+    console.error("Unknown city: " + cityKey);
+    return;
+  }
 
   try {
     const response = await axios.get(
-      WEATHER_API + "?latitude=" + city.lat + "&longitude=" + city.lon + "&current_weather=true"
+      WEATHER_API +
+        "?latitude=" +
+        city.lat +
+        "&longitude=" +
+        city.lon +
+        "&current_weather=true",
     );
-    const temp = response.data.temperature; // Bug 1: wrong path to temperature
+    const temp = response.data.current_weather.temperature;
     console.log(city.name + ": " + temp + "°C");
   } catch (err) {
     console.error(err.message);
   }
 }
 
-fetchCity("london");  // works (kinda)
-fetchCity("tokyo");   // Bug 2: crashes before even fetching
-
-// Bug 1 ↓
-
-// Bug 2 ↓
-
-// Your fix ↓
+fetchCity("london"); // works (kinda)
+fetchCity("tokyo"); // Bug 2: crashes before even fetching
