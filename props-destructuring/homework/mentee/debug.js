@@ -3,14 +3,23 @@
 // ============================================================
 
 const team = [
-  { name: "Alex Rivera", role: "Senior Engineer", dept: "Engineering", email: "alex@devstudio.com",
+  {
+    name: "Alex Rivera",
+    role: "Senior Engineer",
+    dept: "Engineering",
+    email: "alex@devstudio.com",
     photo: "https://randomuser.me/api/portraits/men/32.jpg",
-    bio: "Building clean, fast interfaces one component at a time." },
-  { name: "Sofia Patel",  role: "Lead Designer",   dept: "Design",      email: "sofia@devstudio.com",
+    bio: "Building clean, fast interfaces one component at a time.",
+  },
+  {
+    name: "Sofia Patel",
+    role: "Lead Designer",
+    dept: "Design",
+    email: "sofia@devstudio.com",
     photo: "https://randomuser.me/api/portraits/women/44.jpg",
-    bio: "Designing systems that feel invisible until you need them." },
+    bio: "Designing systems that feel invisible until you need them.",
+  },
 ];
-
 
 // ----------------------------------------------------------
 // 🟢 DEBUG 1 — Prop threading
@@ -19,22 +28,34 @@ const team = [
 // MemberCard. Instead, every card behaves the same way no
 // matter what onContact you pass in. What's wrong?
 
+// function TeamList(props) {
+//   const container = document.createElement("div");
+//   props.members.forEach(function (member) {
+//     const card = MemberCard({
+//       member: member,
+//       onContact: function (email) {
+//         console.log("Hardcoded:", email);
+//       },
+//     });
+//     container.appendChild(card);
+//   });
+//   return container;
+// }
+
+// What's wrong ↓
+// props.onContact isnt being utilized to, while the original code is passing the console.log
+// Your fix ↓
 function TeamList(props) {
   const container = document.createElement("div");
   props.members.forEach(function (member) {
     const card = MemberCard({
       member: member,
-      onContact: function (email) { console.log("Hardcoded:", email); },
+      onContact: props.onContact,
     });
     container.appendChild(card);
   });
   return container;
 }
-
-// What's wrong ↓
-
-// Your fix ↓
-
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 2 — Rest pattern
@@ -47,5 +68,7 @@ function TeamList(props) {
 // console.log(rest);
 
 // What's wrong ↓
+// looking at the console.logs, rest should be inside the braces with name.
 
 // Your fix ↓
+// const {name, ...rest} = team[0];

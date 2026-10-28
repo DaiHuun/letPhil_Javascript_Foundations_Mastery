@@ -6,17 +6,31 @@
 // ============================================================
 
 const team = [
-  { name: "Alex Rivera", role: "Senior Engineer", dept: "Engineering", email: "alex@devstudio.com",
+  {
+    name: "Alex Rivera",
+    role: "Senior Engineer",
+    dept: "Engineering",
+    email: "alex@devstudio.com",
     photo: "https://randomuser.me/api/portraits/men/32.jpg",
-    bio: "Building clean, fast interfaces one component at a time." },
-  { name: "Sofia Patel",  role: "Lead Designer",   dept: "Design",      email: "sofia@devstudio.com",
+    bio: "Building clean, fast interfaces one component at a time.",
+  },
+  {
+    name: "Sofia Patel",
+    role: "Lead Designer",
+    dept: "Design",
+    email: "sofia@devstudio.com",
     photo: "https://randomuser.me/api/portraits/women/44.jpg",
-    bio: "Designing systems that feel invisible until you need them." },
-  { name: "Carlos Ruiz",  role: "Product Manager", dept: "Product",     email: "carlos@devstudio.com",
+    bio: "Designing systems that feel invisible until you need them.",
+  },
+  {
+    name: "Carlos Ruiz",
+    role: "Product Manager",
+    dept: "Product",
+    email: "carlos@devstudio.com",
     photo: "https://randomuser.me/api/portraits/men/67.jpg",
-    bio: "Turning fuzzy ideas into shipped, working products." },
+    bio: "Turning fuzzy ideas into shipped, working products.",
+  },
 ];
-
 
 // TASK 1 — MemberCard (same destructured pattern from class)
 // Rebuild MemberCard exactly like you did in class:
@@ -31,10 +45,38 @@ const team = [
 //   5. <button> — textContent: "📧 Contact"
 //      On click: call onContact(email)
 
-function MemberCard(/* your destructured parameter here */) {
-  // your code here
-}
+function MemberCard({
+  member: { name, role, dept, email, photo, bio },
+  onContact,
+}) {
+  const card = document.createElement("div");
+  card.classList.add("member-card");
 
+  const img = document.createElement("img");
+  img.classList.add("member-photo");
+  img.src = photo;
+  img.alt = name;
+
+  const memberName = document.createElement("h3");
+  memberName.textContent = name;
+
+  const memberRole = document.createElement("p");
+  memberRole.classList.add("member-role");
+  memberRole.textContent = `${role} · ${dept}`;
+
+  const memberBio = document.createElement("p");
+  memberBio.classList.add("member-bio");
+  memberBio.textContent = bio;
+
+  const contactBtn = document.createElement("button");
+  contactBtn.textContent = "📧 Contact";
+  contactBtn.addEventListener("click", function () {
+    onContact(email);
+  });
+
+  card.append(img, memberName, memberRole, memberBio, contactBtn);
+  return card;
+}
 
 // TASK 2 — TeamList (prop threading)
 // Declare a function called TeamList.
@@ -61,15 +103,23 @@ function MemberCard(/* your destructured parameter here */) {
 //   );
 
 function TeamList(props) {
-  // your code here
+  const div = document.createElement("div");
+
+  props.members.forEach(function (member) {
+    const card = MemberCard({ member: member, onContact: props.onContact });
+    div.append(card);
+  });
+
+  return div;
 }
 
 function handleContact(email) {
-  // your code here
+  console.log(`Contacting: ${email}`);
 }
 
-// mount it here
-
+document
+  .getElementById("app")
+  .append(TeamList({ members: team, onContact: handleContact }));
 
 // TASK 3 — two more destructuring reps
 //
@@ -84,10 +134,13 @@ function handleContact(email) {
 //      const { dept = "Unassigned" } = partialMember;
 //    Log dept.
 
+const { name: firstMemberName, ...restOfFirstMember } = team[0];
+console.log(firstMemberName);
+console.log(restOfFirstMember);
+
 const partialMember = { name: "Maya Chen", role: "Intern" };
-
-// your code here
-
+const { dept = "Unassigned" } = partialMember;
+console.log(dept);
 
 // ============================================================
 // 📝 WHAT THIS HOMEWORK DRILLED
